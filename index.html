@@ -228,7 +228,125 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== صورة الشركة مع إطار 3D ===== */
+        /* ===== أنماط البحث المتقدم ===== */
+        .search-container {
+            background: rgba(30,42,54,0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(201,169,89,0.2);
+            border-radius: 30px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(201,169,89,0.3);
+            padding-bottom: 1rem;
+        }
+
+        .search-tab {
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 2px solid var(--gold);
+            border-radius: 40px;
+            color: var(--gold);
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .search-tab.active {
+            background: var(--gold);
+            color: var(--dark);
+        }
+
+        .search-tab:hover:not(.active) {
+            background: rgba(201,169,89,0.2);
+        }
+
+        .search-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-group {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .filter-group input, .filter-group select {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(201,169,89,0.3);
+            border-radius: 10px;
+            color: white;
+        }
+
+        .filter-group input:focus, .filter-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .price-range {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .price-range input {
+            flex: 1;
+        }
+
+        .search-btn {
+            background: var(--gold);
+            color: var(--dark);
+            border: none;
+            border-radius: 15px;
+            padding: 1rem 2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            width: 100%;
+        }
+
+        .search-btn:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .search-results-info {
+            margin: 1rem 0;
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray-light);
+            font-size: 1.2rem;
+        }
+
+        /* صورة الشركة */
         .company-image-container {
             position: relative;
             width: 100%;
@@ -316,101 +434,6 @@
 
         body.admin-logged-in .change-image-btn {
             display: block;
-        }
-
-        /* ===== معرض الصور المتعدد ===== */
-        .image-gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .gallery-thumbnails {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .gallery-thumb {
-            width: 80px;
-            height: 80px;
-            background: #000;
-            border: 2px solid var(--gold);
-            border-radius: 15px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: 0.3s;
-            position: relative;
-        }
-
-        .gallery-thumb:hover {
-            transform: scale(1.1);
-            border-color: #fff;
-        }
-
-        .gallery-thumb.active {
-            border-color: #fff;
-            box-shadow: 0 0 20px var(--gold);
-        }
-
-        .gallery-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .gallery-main {
-            width: 100%;
-            height: 300px;
-            background: #000;
-            border: 3px solid var(--gold);
-            border-radius: 25px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-        }
-
-        .gallery-main img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background: #000;
-        }
-
-        .add-image-btn {
-            background: rgba(212,175,55,0.2);
-            border: 2px dashed var(--gold);
-            color: var(--gold);
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-
-        .add-image-btn:hover {
-            background: rgba(212,175,55,0.3);
-        }
-
-        .delete-image-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 25px;
-            height: 25px;
-            background: rgba(255,0,0,0.7);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-            font-size: 0.8rem;
-            z-index: 10;
         }
 
         .hero {
@@ -1003,6 +1026,10 @@
             .products-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .search-filters {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -1012,7 +1039,7 @@
         <div class="header-content">
             <div class="logo">
                 <i class="fas fa-crown"></i>
-                <h1>EM Combani</h1>
+                <h1>EM Combani </h1>
             </div>
             
             <!-- مبدل العملة -->
@@ -1134,7 +1161,7 @@
         <section id="companySection" class="section active">
             <div class="hero">
                 <div class="hero-content">
-                    <h1>الماسة للسيارات والعقارات</h1>
+                    <h1>EM Combani للسيارات والعقارات</h1>
                     <p>نقدم لكم أفخم السيارات وأرقى العقارات في المنطقة. خبرة أكثر من 15 عاماً في مجال الفخامة والتميز.</p>
                     <div class="hero-stats">
                         <div class="stat">
@@ -1171,7 +1198,7 @@
                 <div class="contact-card">
                     <i class="fas fa-map-marker-alt"></i>
                     <h3>الموقع</h3>
-                    <p></p>شارع بغداد طريق الرايح بعد كازية الازبكية ثاني دخله ع ايدك اليسار</p>
+                    <p>شارع بغداد طريق الرايح بعد كازية الازبكية ثاني دخله ع ايدك اليسار</p>
                 </div>
                 <div class="contact-card">
                     <i class="fas fa-phone-alt"></i>
@@ -1196,8 +1223,10 @@
                 </div>
                 <div class="team-card">
                     <i class="fas fa-user-tie"></i>
-                    <h3>م. فهد السبيعي</h3>
-                    <p>السيد منير</p>
+                    <h3>السيد منير</h3>
+                    <p>مدير مبيعات السيارات</p>
+                </div>
+           
                 </div>
             </div>
         </section>
@@ -1205,12 +1234,130 @@
         <!-- Cars Section -->
         <section id="carsSection" class="section">
             <h2 style="text-align: center; margin-bottom: 2rem; color: var(--gold);">السيارات الفاخرة</h2>
+            
+            <!-- Search Section for Cars -->
+            <div class="search-container">
+                <div class="search-tabs">
+                    <button class="search-tab active" onclick="switchSearchType('cars', 'basic')">بحث أساسي</button>
+                    <button class="search-tab" onclick="switchSearchType('cars', 'advanced')">بحث متقدم</button>
+                </div>
+                
+                <div id="carsBasicSearch">
+                    <div class="search-filters">
+                        <div class="filter-group">
+                            <label><i class="fas fa-search"></i> بحث بالاسم</label>
+                            <input type="text" id="carNameSearch" placeholder="أدخل اسم السيارة...">
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="carsAdvancedSearch" style="display: none;">
+                    <div class="search-filters">
+                        <div class="filter-group">
+                            <label><i class="fas fa-tag"></i> اسم السيارة</label>
+                            <input type="text" id="carNameAdvSearch" placeholder="اسم السيارة">
+                        </div>
+                        <div class="filter-group">
+                            <label><i class="fas fa-money-bill"></i> السعر من - إلى</label>
+                            <div class="price-range">
+                                <input type="number" id="carPriceMin" placeholder="من">
+                                <span>-</span>
+                                <input type="number" id="carPriceMax" placeholder="إلى">
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <label><i class="fas fa-calendar"></i> الموديل</label>
+                            <input type="text" id="carModel" placeholder="مثال: 2024">
+                        </div>
+                        <div class="filter-group">
+                            <label><i class="fas fa-cog"></i> نوع السيارة</label>
+                            <select id="carTypeSearch">
+                                <option value="">الكل</option>
+                                <option value="بيع">بيع</option>
+                                <option value="تأجير">تأجير</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="search-btn" onclick="searchCars()">
+                    <i class="fas fa-search"></i> بحث في السيارات
+                </button>
+                <button class="search-btn" style="background: transparent; border: 2px solid var(--gold); margin-top: 0.5rem;" onclick="resetCarSearch()">
+                    <i class="fas fa-redo"></i> إعادة تعيين
+                </button>
+            </div>
+            
+            <div class="search-results-info" id="carSearchResults"></div>
             <div class="products-grid" id="carsGrid"></div>
         </section>
 
         <!-- Real Estate Section -->
         <section id="realestateSection" class="section">
             <h2 style="text-align: center; margin-bottom: 2rem; color: var(--gold);">العقارات الراقية</h2>
+            
+            <!-- Search Section for Real Estate -->
+            <div class="search-container">
+                <div class="search-tabs">
+                    <button class="search-tab active" onclick="switchSearchType('props', 'basic')">بحث أساسي</button>
+                    <button class="search-tab" onclick="switchSearchType('props', 'advanced')">بحث متقدم</button>
+                </div>
+                
+                <div id="propsBasicSearch">
+                    <div class="search-filters">
+                        <div class="filter-group">
+                            <label><i class="fas fa-search"></i> بحث بالاسم</label>
+                            <input type="text" id="propNameSearch" placeholder="أدخل اسم العقار...">
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="propsAdvancedSearch" style="display: none;">
+                    <div class="search-filters">
+                        <div class="filter-group">
+                            <label><i class="fas fa-tag"></i> اسم العقار</label>
+                            <input type="text" id="propNameAdvSearch" placeholder="اسم العقار">
+                        </div>
+                        <div class="filter-group">
+                            <label><i class="fas fa-money-bill"></i> السعر من - إلى</label>
+                            <div class="price-range">
+                                <input type="number" id="propPriceMin" placeholder="من">
+                                <span>-</span>
+                                <input type="number" id="propPriceMax" placeholder="إلى">
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <label><i class="fas fa-vector-square"></i> المساحة (م²)</label>
+                            <div class="price-range">
+                                <input type="number" id="propAreaMin" placeholder="من">
+                                <span>-</span>
+                                <input type="number" id="propAreaMax" placeholder="إلى">
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <label><i class="fas fa-map-marker-alt"></i> الموقع</label>
+                            <input type="text" id="propLocation" placeholder="الحي أو المنطقة">
+                        </div>
+                        <div class="filter-group">
+                            <label><i class="fas fa-cog"></i> نوع العقار</label>
+                            <select id="propTypeSearch">
+                                <option value="">الكل</option>
+                                <option value="بيع">بيع</option>
+                                <option value="تأجير">تأجير</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="search-btn" onclick="searchProperties()">
+                    <i class="fas fa-search"></i> بحث في العقارات
+                </button>
+                <button class="search-btn" style="background: transparent; border: 2px solid var(--gold); margin-top: 0.5rem;" onclick="resetPropertySearch()">
+                    <i class="fas fa-redo"></i> إعادة تعيين
+                </button>
+            </div>
+            
+            <div class="search-results-info" id="propSearchResults"></div>
             <div class="products-grid" id="propsGrid"></div>
         </section>
 
@@ -1239,7 +1386,7 @@
                                 <i class="fas fa-plus"></i> إضافة صورة
                             </button>
                         </div>
-                        <input type="text" id="carDetails" placeholder="التفاصيل" required>
+                        <input type="text" id="carDetails" placeholder="التفاصيل (الموديل - اللون - ...)" required>
                         <select id="carType">
                             <option value="بيع">بيع</option>
                             <option value="تأجير">تأجير</option>
@@ -1276,7 +1423,7 @@
                                 <i class="fas fa-plus"></i> إضافة صورة
                             </button>
                         </div>
-                        <input type="text" id="propDetails" placeholder="التفاصيل" required>
+                        <input type="text" id="propDetails" placeholder="التفاصيل (المساحة - الغرف - الموقع)" required>
                         <select id="propType">
                             <option value="بيع">بيع</option>
                             <option value="تأجير">تأجير</option>
@@ -1383,7 +1530,7 @@
                 priceUSD: '226667', 
                 currency: 'SAR', 
                 images: ['https://images.unsplash.com/photo-1563720360172-67b8f3dce741?w=600'],
-                details: 'موديل 2024 - فل كامل - 0 كم', 
+                details: 'موديل 2024 - فل كامل - 0 كم - فضي', 
                 type: 'بيع' 
             },
             { 
@@ -1393,7 +1540,17 @@
                 priceUSD: '181333', 
                 currency: 'SAR', 
                 images: ['https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600'],
-                details: 'موديل 2024 - 7 راكب - أسود', 
+                details: 'موديل 2024 - 7 راكب - أسود - دفع رباعي', 
+                type: 'بيع' 
+            },
+            { 
+                id: 'CAR-003', 
+                name: 'رولز رويس جوست', 
+                price: '1800000', 
+                priceUSD: '480000', 
+                currency: 'SAR', 
+                images: ['https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=600'],
+                details: 'موديل 2024 - فاخرة - أبيض - 0 كم', 
                 type: 'بيع' 
             }
         ];
@@ -1406,7 +1563,7 @@
                 priceUSD: '1466667', 
                 currency: 'SAR', 
                 images: ['https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600'],
-                details: '5 غرف - مسبح - حديقة', 
+                details: '5 غرف - مسبح - حديقة 500م - حي النرجس', 
                 type: 'بيع' 
             },
             { 
@@ -1416,7 +1573,7 @@
                 priceUSD: '6667', 
                 currency: 'SAR', 
                 images: ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600'],
-                details: '3 غرف - بانوراما - مؤثثة', 
+                details: '3 غرف - بانوراما - مؤثثة - العليا', 
                 type: 'تأجير' 
             }
         ];
@@ -1437,6 +1594,12 @@
         let currentUser = null;
         let isAdmin = false;
         let favorites = loadFromStorage(STORAGE_KEYS.FAVORITES, []);
+        
+        // ========== حالة البحث ==========
+        let currentCarSearchType = 'basic';
+        let currentPropSearchType = 'basic';
+        let filteredCars = [...cars];
+        let filteredProperties = [...properties];
 
         // ========== سعر الصرف ==========
         const USD_TO_SAR = 3.75;
@@ -1495,7 +1658,205 @@
             adminCredentials = loadFromStorage(STORAGE_KEYS.ADMIN, DEFAULT_ADMIN);
             currentCurrency = loadFromStorage(STORAGE_KEYS.CURRENCY, 'SAR');
             favorites = loadFromStorage(STORAGE_KEYS.FAVORITES, []);
-            companyImage = loadFromStorage(STORAGE_KEYS.COMPANY_IMAGE, 'https://i.imgpeek.com/0q0MyXv6f6HG');
+            companyImage = loadFromStorage(STORAGE_KEYS.COMPANY_IMAGE, 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800');
+            
+            filteredCars = [...cars];
+            filteredProperties = [...properties];
+        }
+
+        // ========== دوال البحث ==========
+        function switchSearchType(type, searchType) {
+            if (type === 'cars') {
+                currentCarSearchType = searchType;
+                document.querySelectorAll('#carsSection .search-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                event.currentTarget.classList.add('active');
+                
+                document.getElementById('carsBasicSearch').style.display = searchType === 'basic' ? 'block' : 'none';
+                document.getElementById('carsAdvancedSearch').style.display = searchType === 'advanced' ? 'block' : 'none';
+            } else {
+                currentPropSearchType = searchType;
+                document.querySelectorAll('#realestateSection .search-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                event.currentTarget.classList.add('active');
+                
+                document.getElementById('propsBasicSearch').style.display = searchType === 'basic' ? 'block' : 'none';
+                document.getElementById('propsAdvancedSearch').style.display = searchType === 'advanced' ? 'block' : 'none';
+            }
+        }
+
+        function searchCars() {
+            if (currentCarSearchType === 'basic') {
+                const searchTerm = document.getElementById('carNameSearch').value.toLowerCase().trim();
+                
+                if (searchTerm === '') {
+                    filteredCars = [...cars];
+                    document.getElementById('carSearchResults').innerHTML = '';
+                } else {
+                    filteredCars = cars.filter(car => 
+                        car.name.toLowerCase().includes(searchTerm) ||
+                        car.id.toLowerCase().includes(searchTerm) ||
+                        car.details.toLowerCase().includes(searchTerm)
+                    );
+                    
+                    document.getElementById('carSearchResults').innerHTML = 
+                        `تم العثور على ${filteredCars.length} نتيجة`;
+                }
+            } else {
+                const nameTerm = document.getElementById('carNameAdvSearch').value.toLowerCase().trim();
+                const priceMin = document.getElementById('carPriceMin').value;
+                const priceMax = document.getElementById('carPriceMax').value;
+                const model = document.getElementById('carModel').value.toLowerCase().trim();
+                const type = document.getElementById('carTypeSearch').value;
+                
+                filteredCars = cars.filter(car => {
+                    // فلتر الاسم
+                    if (nameTerm && !car.name.toLowerCase().includes(nameTerm) && !car.id.toLowerCase().includes(nameTerm)) {
+                        return false;
+                    }
+                    
+                    // فلتر السعر
+                    const carPrice = parseInt(car.price);
+                    if (priceMin && carPrice < parseInt(priceMin)) return false;
+                    if (priceMax && carPrice > parseInt(priceMax)) return false;
+                    
+                    // فلتر الموديل
+                    if (model && !car.details.toLowerCase().includes(model)) return false;
+                    
+                    // فلتر النوع
+                    if (type && car.type !== type) return false;
+                    
+                    return true;
+                });
+                
+                document.getElementById('carSearchResults').innerHTML = 
+                    `تم العثور على ${filteredCars.length} نتيجة`;
+            }
+            
+            displayFilteredCars();
+        }
+
+        function searchProperties() {
+            if (currentPropSearchType === 'basic') {
+                const searchTerm = document.getElementById('propNameSearch').value.toLowerCase().trim();
+                
+                if (searchTerm === '') {
+                    filteredProperties = [...properties];
+                    document.getElementById('propSearchResults').innerHTML = '';
+                } else {
+                    filteredProperties = properties.filter(prop => 
+                        prop.name.toLowerCase().includes(searchTerm) ||
+                        prop.id.toLowerCase().includes(searchTerm) ||
+                        prop.details.toLowerCase().includes(searchTerm)
+                    );
+                    
+                    document.getElementById('propSearchResults').innerHTML = 
+                        `تم العثور على ${filteredProperties.length} نتيجة`;
+                }
+            } else {
+                const nameTerm = document.getElementById('propNameAdvSearch').value.toLowerCase().trim();
+                const priceMin = document.getElementById('propPriceMin').value;
+                const priceMax = document.getElementById('propPriceMax').value;
+                const areaMin = document.getElementById('propAreaMin').value;
+                const areaMax = document.getElementById('propAreaMax').value;
+                const location = document.getElementById('propLocation').value.toLowerCase().trim();
+                const type = document.getElementById('propTypeSearch').value;
+                
+                filteredProperties = properties.filter(prop => {
+                    // فلتر الاسم
+                    if (nameTerm && !prop.name.toLowerCase().includes(nameTerm) && !prop.id.toLowerCase().includes(nameTerm)) {
+                        return false;
+                    }
+                    
+                    // فلتر السعر
+                    const propPrice = parseInt(prop.price);
+                    if (priceMin && propPrice < parseInt(priceMin)) return false;
+                    if (priceMax && propPrice > parseInt(priceMax)) return false;
+                    
+                    // فلتر المساحة
+                    const areaMatch = prop.details.match(/(\d+)\s*م²/);
+                    if (areaMatch) {
+                        const area = parseInt(areaMatch[1]);
+                        if (areaMin && area < parseInt(areaMin)) return false;
+                        if (areaMax && area > parseInt(areaMax)) return false;
+                    }
+                    
+                    // فلتر الموقع
+                    if (location && !prop.details.toLowerCase().includes(location)) return false;
+                    
+                    // فلتر النوع
+                    if (type && prop.type !== type) return false;
+                    
+                    return true;
+                });
+                
+                document.getElementById('propSearchResults').innerHTML = 
+                    `تم العثور على ${filteredProperties.length} نتيجة`;
+            }
+            
+            displayFilteredProperties();
+        }
+
+        function resetCarSearch() {
+            document.getElementById('carNameSearch').value = '';
+            document.getElementById('carNameAdvSearch').value = '';
+            document.getElementById('carPriceMin').value = '';
+            document.getElementById('carPriceMax').value = '';
+            document.getElementById('carModel').value = '';
+            document.getElementById('carTypeSearch').value = '';
+            
+            filteredCars = [...cars];
+            document.getElementById('carSearchResults').innerHTML = '';
+            displayFilteredCars();
+        }
+
+        function resetPropertySearch() {
+            document.getElementById('propNameSearch').value = '';
+            document.getElementById('propNameAdvSearch').value = '';
+            document.getElementById('propPriceMin').value = '';
+            document.getElementById('propPriceMax').value = '';
+            document.getElementById('propAreaMin').value = '';
+            document.getElementById('propAreaMax').value = '';
+            document.getElementById('propLocation').value = '';
+            document.getElementById('propTypeSearch').value = '';
+            
+            filteredProperties = [...properties];
+            document.getElementById('propSearchResults').innerHTML = '';
+            displayFilteredProperties();
+        }
+
+        function displayFilteredCars() {
+            const grid = document.getElementById('carsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            if (filteredCars.length === 0) {
+                grid.innerHTML = '<div class="no-results"><i class="fas fa-search"></i> لا توجد نتائج للبحث</div>';
+                return;
+            }
+            
+            filteredCars.forEach(car => {
+                const card = createProductCard(car);
+                grid.appendChild(card);
+            });
+        }
+
+        function displayFilteredProperties() {
+            const grid = document.getElementById('propsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            if (filteredProperties.length === 0) {
+                grid.innerHTML = '<div class="no-results"><i class="fas fa-search"></i> لا توجد نتائج للبحث</div>';
+                return;
+            }
+            
+            filteredProperties.forEach(prop => {
+                const card = createProductCard(prop);
+                grid.appendChild(card);
+            });
         }
 
         // ========== صورة الشركة ==========
@@ -1558,25 +1919,13 @@
 
         // ========== دوال العرض ==========
         function displayCars() {
-            const grid = document.getElementById('carsGrid');
-            if (!grid) return;
-            
-            grid.innerHTML = '';
-            cars.forEach(car => {
-                const card = createProductCard(car);
-                grid.appendChild(card);
-            });
+            filteredCars = [...cars];
+            displayFilteredCars();
         }
 
         function displayProperties() {
-            const grid = document.getElementById('propsGrid');
-            if (!grid) return;
-            
-            grid.innerHTML = '';
-            properties.forEach(prop => {
-                const card = createProductCard(prop);
-                grid.appendChild(card);
-            });
+            filteredProperties = [...properties];
+            displayFilteredProperties();
         }
 
         function createProductCard(item) {
@@ -1655,8 +2004,6 @@
                 document.getElementById('detailsModal').classList.add('active');
             }
         }
-
-        // باقي الدوال (formatPrice, updateCounts, updateTables, showSection, openModal, closeModal, handleUserLogin, handleAdminLogin, logout, inquire, closeDetailsModal, addToFavorites, showFavorites, showInquiries, showAdminTab, addCar, addProperty, deleteCar, deleteProperty, changeAdminCredentials, setCurrency, updateCurrencyUI) تبقى كما هي مع إضافة منطق الصور المتعددة في دوال الإضافة
 
         // ========== تحديث عدد العناصر ==========
         function updateCounts() {
@@ -1847,7 +2194,7 @@
             if (item) {
                 const displayPrice = formatPrice(item.price, item.priceUSD, currentCurrency);
                 const msg = `السلام عليكم، أود الاستفسار عن:\n\nالمنتج: ${item.name}\nالرقم: ${item.id}\nالسعر: ${displayPrice}\nالتفاصيل: ${item.details}`;
-                window.open(`https://wa.me/966551234567?text=${encodeURIComponent(msg)}`);
+                window.open(`https://wa.me/963992520735?text=${encodeURIComponent(msg)}`);
             }
         }
 
@@ -2076,4 +2423,4 @@
         }
     </script>
 </body>
-  </html>
+                        </html>
