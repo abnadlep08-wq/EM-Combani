@@ -1,4 +1,4 @@
-            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,6 @@
             position: relative;
         }
 
-        /* Header */
         .header {
             background: var(--primary);
             color: var(--white);
@@ -72,7 +71,6 @@
             color: #ccc;
         }
 
-        /* ===== مبدل العملة ===== */
         .currency-switcher {
             display: flex;
             align-items: center;
@@ -138,7 +136,6 @@
             color: var(--primary);
         }
 
-        /* Main Navigation */
         .main-nav {
             background: var(--white);
             border-bottom: 3px solid var(--secondary);
@@ -167,7 +164,6 @@
             color: var(--secondary);
         }
 
-        /* Notification Bell */
         .notification-bell {
             position: relative;
             margin-left: 1rem;
@@ -224,7 +220,6 @@
             background: #fff3e0;
         }
 
-        /* Main Content */
         .main-content {
             max-width: 1400px;
             margin: 2rem auto;
@@ -245,7 +240,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Hero Section */
         .hero {
             text-align: center;
             margin-bottom: 3rem;
@@ -262,7 +256,6 @@
             font-size: 1.1rem;
         }
 
-        /* Search Sections */
         .search-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -321,7 +314,6 @@
             background: var(--gold-light);
         }
 
-        /* Rating Stars */
         .rating {
             color: var(--secondary);
             margin: 0.5rem 0;
@@ -337,7 +329,6 @@
             margin-right: 0.5rem;
         }
 
-        /* Featured Grid */
         .featured-section {
             margin: 3rem 0;
         }
@@ -428,7 +419,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Services Grid */
         .services-section {
             margin: 3rem 0;
         }
@@ -464,7 +454,6 @@
             color: var(--gray);
         }
 
-        /* Why Choose Us */
         .why-section {
             margin: 3rem 0;
         }
@@ -496,7 +485,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Testimonials */
         .testimonials-section {
             margin: 3rem 0;
         }
@@ -529,7 +517,6 @@
             font-weight: 700;
         }
 
-        /* Chat Button */
         .chat-button {
             position: fixed;
             bottom: 30px;
@@ -627,7 +614,6 @@
             cursor: pointer;
         }
 
-        /* Footer */
         .footer {
             background: var(--primary);
             color: var(--white);
@@ -690,7 +676,6 @@
             color: #ccc;
         }
 
-        /* Login Modals */
         .modal {
             position: fixed;
             top: 0;
@@ -755,7 +740,6 @@
             font-size: 1.5rem;
         }
 
-        /* Profile Menu */
         .profile-menu {
             position: relative;
             display: none;
@@ -802,7 +786,6 @@
             background: #f5f5f5;
         }
 
-        /* Map Container */
         .map-container {
             height: 300px;
             width: 100%;
@@ -811,7 +794,6 @@
             overflow: hidden;
         }
 
-        /* 360 Viewer */
         .view360-container {
             position: relative;
             width: 100%;
@@ -838,7 +820,6 @@
             font-size: 0.9rem;
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
             .featured-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -882,7 +863,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="header-content">
             <div class="logo">
@@ -890,18 +870,12 @@
                 <p>شريكك الموثوق في عالم السيارات والعقارات</p>
             </div>
             <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-                <!-- ===== مبدل العملة ===== -->
                 <div class="currency-switcher">
-                    <button class="currency-btn currency-syp active" onclick="switchCurrency('SYP')">
-                        🇸🇾 ل.س
-                    </button>
-                    <button class="currency-btn currency-usd" onclick="switchCurrency('USD')">
-                        🇺🇸 $
-                    </button>
+                    <button class="currency-btn currency-syp active" onclick="switchCurrency('SYP')">🇸🇾 ل.س</button>
+                    <button class="currency-btn currency-usd" onclick="switchCurrency('USD')">🇺🇸 $</button>
                     <span class="exchange-rate-info" id="exchangeRateInfo">1$ = 13,000 ل.س</span>
                 </div>
                 
-                <!-- Notification Bell -->
                 <div class="notification-bell" id="notificationBell">
                     <i class="fas fa-bell"></i>
                     <span class="notification-badge" id="notificationBadge">0</span>
@@ -912,7 +886,7 @@
                     <button class="auth-btn" onclick="openModal('user')">
                         <i class="fas fa-user"></i> دخول العملاء
                     </button>
-                    <a href="admin.html" target="_blank">
+                    <a href="admin-login.html" target="_blank">
                         <button class="auth-btn admin" id="adminLoginBtn">
                             <i class="fas fa-lock"></i> لوحة المدير
                         </button>
@@ -935,7 +909,6 @@
         </div>
     </header>
 
-    <!-- Main Navigation -->
     <nav class="main-nav">
         <div class="nav-links">
             <a href="#" class="active" onclick="showSection('home')">الرئيسية</a>
@@ -945,18 +918,14 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- Home Section -->
         <section id="homeSection" class="section active">
             <div class="hero">
                 <h2>بيع وشراء السيارات والعقارات</h2>
                 <p>شريكك الموثوق في عالم السيارات والعقارات</p>
             </div>
 
-            <!-- Search Sections -->
             <div class="search-grid">
-                <!-- Find Car -->
                 <div class="search-card">
                     <h3>ابحث عن سيارة</h3>
                     <div class="search-filters">
@@ -982,7 +951,6 @@
                     </div>
                 </div>
 
-                <!-- Find Property -->
                 <div class="search-card">
                     <h3>ابحث عن عقار</h3>
                     <div class="search-filters">
@@ -1007,7 +975,6 @@
                 </div>
             </div>
 
-            <!-- Featured Cars -->
             <div class="featured-section">
                 <div class="section-header">
                     <h3>سيارات مميزة</h3>
@@ -1016,7 +983,6 @@
                 <div class="featured-grid" id="featuredCars"></div>
             </div>
 
-            <!-- Featured Properties -->
             <div class="featured-section">
                 <div class="section-header">
                     <h3>عقارات مميزة</h3>
@@ -1025,7 +991,6 @@
                 <div class="featured-grid" id="featuredProperties"></div>
             </div>
 
-            <!-- Services -->
             <div class="services-section">
                 <h3 style="text-align: center; font-size: 2rem; margin-bottom: 2rem;">خدماتنا</h3>
                 <div class="services-grid">
@@ -1047,7 +1012,6 @@
                 </div>
             </div>
 
-            <!-- Why Choose Us -->
             <div class="why-section">
                 <h3 style="text-align: center; font-size: 2rem; margin-bottom: 2rem;">لماذا تختار EM COMBANI؟</h3>
                 <div class="why-grid">
@@ -1069,7 +1033,6 @@
                 </div>
             </div>
 
-            <!-- Testimonials -->
             <div class="testimonials-section">
                 <div class="testimonial-card">
                     <i class="fas fa-quote-right"></i>
@@ -1079,19 +1042,16 @@
             </div>
         </section>
 
-        <!-- Cars Section -->
         <section id="carsSection" class="section">
             <h2 style="text-align: center; margin-bottom: 2rem;">جميع السيارات</h2>
             <div class="featured-grid" id="carsGrid"></div>
         </section>
 
-        <!-- Real Estate Section -->
         <section id="realestateSection" class="section">
             <h2 style="text-align: center; margin-bottom: 2rem;">جميع العقارات</h2>
             <div class="featured-grid" id="propsGrid"></div>
         </section>
 
-        <!-- Contact Section -->
         <section id="contactSection" class="section">
             <h2 style="text-align: center; margin-bottom: 2rem;">اتصل بنا</h2>
             <div style="background: var(--white); padding: 2rem; border-radius: 10px;">
@@ -1113,12 +1073,10 @@
         </section>
     </main>
 
-    <!-- Chat Button -->
     <div class="chat-button" onclick="toggleChat()">
         <i class="fas fa-comment"></i>
     </div>
 
-    <!-- Chat Window -->
     <div class="chat-window" id="chatWindow">
         <div class="chat-header">
             <span>الدردشة المباشرة</span>
@@ -1131,7 +1089,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
@@ -1170,11 +1127,10 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>جميع الحقوق محفوظة 2026 EM COMBANI</p>
+            <p>جميع الحقوق محفوظة &copy; 2024 EM COMBANI</p>
         </div>
     </footer>
 
-    <!-- Login Modal - User -->
     <div class="modal" id="userModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1195,7 +1151,6 @@
         </div>
     </div>
 
-    <!-- Product Details Modal -->
     <div class="modal" id="detailsModal">
         <div class="modal-content" style="max-width: 800px;">
             <div class="modal-header">
@@ -1206,7 +1161,6 @@
         </div>
     </div>
 
-    <!-- Rating Modal -->
     <div class="modal" id="ratingModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1231,19 +1185,15 @@
     </div>
 
     <script>
-        // ========== نظام تحويل العملات المتكامل ==========
-        const SYP_TO_USD = 13000; // 1 دولار = 13,000 ليرة سورية (قابل للتعديل)
+        const SYP_TO_USD = 13000;
         let currentCurrency = localStorage.getItem('preferred_currency') || 'SYP';
 
-        // تحديث معلومات سعر الصرف
         document.getElementById('exchangeRateInfo').textContent = `1$ = ${SYP_TO_USD.toLocaleString()} ل.س`;
 
-        // حفظ تفضيل العملة
         function saveCurrencyPreference() {
             localStorage.setItem('preferred_currency', currentCurrency);
         }
 
-        // تحويل السعر من ل.س إلى العملة المحددة
         function convertPrice(priceSYP) {
             if (!priceSYP) return 0;
             const numPrice = parseInt(priceSYP.toString().replace(/[^\d]/g, ''));
@@ -1253,7 +1203,6 @@
             return numPrice;
         }
 
-        // عرض السعر مع العملة المناسبة
         function formatPriceWithCurrency(priceSYP) {
             const converted = convertPrice(priceSYP);
             if (currentCurrency === 'USD') {
@@ -1263,12 +1212,10 @@
             }
         }
 
-        // تبديل العملة
         function switchCurrency(currency) {
             currentCurrency = currency;
             saveCurrencyPreference();
             
-            // تحديث حالة الأزرار
             document.querySelectorAll('.currency-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -1278,28 +1225,21 @@
                 document.querySelector('.currency-syp').classList.add('active');
             }
             
-            // تحديث جميع البطاقات
             displayFeaturedCars();
             displayFeaturedProperties();
             displayAllCars();
             displayAllProperties();
             
-            // تحديث نتائج البحث إذا كانت مفتوحة
             if (document.getElementById('carsSection').classList.contains('active')) {
                 displayAllCars();
             }
             if (document.getElementById('realestateSection').classList.contains('active')) {
                 displayAllProperties();
             }
-            
-            // رسالة تأكيد (اختياري)
-            showNotification(`تم تغيير العملة إلى ${currency === 'USD' ? 'الدولار' : 'الليرة السورية'}`);
         }
 
-        // ========== التصحيح: التحقق من وجود Notification API ==========
         const isNotificationSupported = typeof Notification !== 'undefined';
         
-        // ========== البيانات ==========
         let cars = [
             { 
                 id: 'CAR-001', 
@@ -1356,7 +1296,6 @@
         let chatMessages = [];
         let contactMap = null;
 
-        // ========== الإشعارات الفورية ==========
         function addNotification(message, type = 'info') {
             const notification = {
                 id: Date.now(),
@@ -1372,9 +1311,7 @@
             if (isNotificationSupported && Notification.permission === 'granted') {
                 try {
                     new Notification('EM COMBANI', { body: message });
-                } catch (e) {
-                    console.log('الإشعارات غير مدعومة في هذا المتصفح');
-                }
+                } catch (e) {}
             }
         }
 
@@ -1408,7 +1345,6 @@
             Notification.requestPermission();
         }
 
-        // ========== نظام التقييم ==========
         function openRatingModal(productId) {
             const allItems = [...cars, ...properties];
             currentRatingProduct = allItems.find(i => i.id === productId);
@@ -1465,7 +1401,6 @@
             });
         }
 
-        // ========== الخريطة التفاعلية ==========
         function initMap(elementId, lat = 33.5138, lng = 36.2765) {
             const element = document.getElementById(elementId);
             if (!element) return null;
@@ -1488,12 +1423,10 @@
                 
                 return map;
             } catch (e) {
-                console.log('خطأ في تهيئة الخريطة:', e);
                 return null;
             }
         }
 
-        // ========== عرض 360 درجة ==========
         function init360View(containerId, imageUrl) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -1524,7 +1457,6 @@
             });
         }
 
-        // ========== الدردشة المباشرة ==========
         function toggleChat() {
             const chat = document.getElementById('chatWindow');
             if (chat) {
@@ -1574,13 +1506,10 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        // ========== حفظ البيانات ==========
         function saveNotifications() {
             try {
                 localStorage.setItem('em_notifications', JSON.stringify(notifications));
-            } catch (e) {
-                console.log('خطأ في حفظ الإشعارات');
-            }
+            } catch (e) {}
         }
 
         function loadNotifications() {
@@ -1588,12 +1517,9 @@
                 const saved = localStorage.getItem('em_notifications');
                 if (saved) notifications = JSON.parse(saved);
                 updateNotificationBadge();
-            } catch (e) {
-                console.log('خطأ في تحميل الإشعارات');
-            }
+            } catch (e) {}
         }
 
-        // ========== دوال العرض مع تحويل العملة ==========
         function displayFeaturedCars() {
             const container = document.getElementById('featuredCars');
             if (!container) return;
@@ -1733,7 +1659,6 @@
             document.getElementById('detailsModal').classList.remove('active');
         }
 
-        // ========== البحث ==========
         function searchCars() {
             const make = document.getElementById('carMake').value;
             const minPrice = document.getElementById('carMinPrice').value;
@@ -1785,7 +1710,6 @@
             });
         }
 
-        // ========== التنقل بين الأقسام ==========
         function showSection(section) {
             event.preventDefault();
             
@@ -1816,7 +1740,6 @@
             }
         }
 
-        // ========== النوافذ المنبثقة ==========
         function openModal(type) {
             document.getElementById('userModal').classList.add('active');
         }
@@ -1860,18 +1783,11 @@
             alert('المفضلة قيد التطوير');
         }
 
-        function showNotification(message) {
-            // يمكنك استخدام هذه الدالة لعرض إشعارات صغيرة
-            console.log(message);
-        }
-
-        // ========== التهيئة ==========
         document.addEventListener('DOMContentLoaded', function() {
             displayFeaturedCars();
             displayFeaturedProperties();
             loadNotifications();
             
-            // تفعيل العملة المحفوظة
             if (currentCurrency === 'USD') {
                 document.querySelector('.currency-usd').classList.add('active');
                 document.querySelector('.currency-syp').classList.remove('active');
@@ -1883,4 +1799,4 @@
         });
     </script>
 </body>
-    </html>
+            </html>
