@@ -22,17 +22,17 @@
         }
 
         :root {
-            --primary: #0a0f15;        /* أسود داكن جداً */
-            --secondary: #e6b800;        /* ذهبي */
-            --gold: #e6b800;              /* ذهبي */
-            --gold-light: #ffd700;        /* ذهبي فاتح */
-            --dark: #0a0f15;              /* أسود داكن */
-            --darker: #05080c;             /* أسود أغمق */
-            --white: #ffffff;              /* أبيض للنصوص */
-            --gray: #2c3e50;               /* رمادي غامق */
-            --gray-light: #34495e;         /* رمادي أفتح قليلاً */
-            --light-bg: #14181f;           /* خلفية داكنة جداً (بدلاً من الأبيض) */
-            --card-bg: #1e2630;             /* خلفية البطاقات */
+            --primary: #0a0f15;
+            --secondary: #e6b800;
+            --gold: #e6b800;
+            --gold-light: #ffd700;
+            --dark: #0a0f15;
+            --darker: #05080c;
+            --white: #ffffff;
+            --gray: #2c3e50;
+            --gray-light: #34495e;
+            --light-bg: #14181f;
+            --card-bg: #1e2630;
             --shadow: 0 10px 30px rgba(0,0,0,0.5);
             --shadow-gold: 0 5px 20px rgba(230,184,0,0.2);
         }
@@ -44,7 +44,6 @@
             min-height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 280px;
             background: var(--primary);
@@ -100,7 +99,6 @@
             color: var(--secondary);
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             margin-right: 280px;
@@ -137,7 +135,6 @@
             font-size: 1rem;
         }
 
-        /* Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -184,7 +181,6 @@
             color: #aaa;
         }
 
-        /* Charts */
         .charts-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -205,7 +201,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Tables */
         .section-card {
             background: var(--card-bg);
             padding: 1.5rem;
@@ -267,7 +262,6 @@
             background: #218838;
         }
 
-        /* Forms */
         .form-container {
             background: var(--card-bg);
             padding: 2rem;
@@ -323,7 +317,6 @@
             color: #aaa;
         }
 
-        /* Image Preview */
         .image-preview {
             display: flex;
             flex-wrap: wrap;
@@ -377,7 +370,6 @@
             margin-top: 0.5rem;
         }
 
-        /* Map */
         .map-container {
             height: 300px;
             width: 100%;
@@ -395,7 +387,6 @@
             border: 1px solid var(--secondary);
         }
 
-        /* Tables */
         .table {
             width: 100%;
             border-collapse: collapse;
@@ -450,7 +441,6 @@
             border: 2px solid var(--secondary);
         }
 
-        /* Messages */
         .message-item {
             background: var(--card-bg);
             padding: 1rem;
@@ -497,7 +487,6 @@
             color: var(--primary);
         }
 
-        /* Tabs */
         .admin-tabs {
             display: flex;
             gap: 1rem;
@@ -530,7 +519,6 @@
             display: block;
         }
 
-        /* Success Message */
         .success-message {
             background: #28a745;
             color: white;
@@ -540,7 +528,6 @@
             text-align: center;
         }
 
-        /* Settings Section */
         #settingsSection .section-card {
             background: var(--card-bg);
         }
@@ -550,7 +537,6 @@
             opacity: 0.3;
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
             .sidebar {
                 width: 80px;
@@ -589,7 +575,6 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
         <h2><i class="fas fa-crown"></i> <span>لوحة التحكم</span></h2>
         <ul class="sidebar-menu">
@@ -605,9 +590,7 @@
         </ul>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
         <div class="header">
             <h1>مرحباً، <span>المدير</span></h1>
             <div class="admin-badge">
@@ -615,9 +598,7 @@
             </div>
         </div>
 
-        <!-- Dashboard Section -->
         <div id="dashboardSection" class="tab-content active">
-            <!-- Stats Cards -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-car"></i></div>
@@ -649,7 +630,6 @@
                 </div>
             </div>
 
-            <!-- Charts -->
             <div class="charts-grid">
                 <div class="chart-card">
                     <h3>المبيعات الشهرية</h3>
@@ -661,7 +641,6 @@
                 </div>
             </div>
 
-            <!-- Recent Items -->
             <div class="section-card">
                 <div class="section-header">
                     <h2>أحدث السيارات المضافة</h2>
@@ -701,7 +680,6 @@
             </div>
         </div>
 
-        <!-- Cars Management Section -->
         <div id="carsSection" class="tab-content">
             <div class="section-card">
                 <div class="section-header">
@@ -711,7 +689,6 @@
                     </button>
                 </div>
 
-                <!-- Add Car Form -->
                 <div id="addCarForm" style="display: none;" class="form-container">
                     <h3><i class="fas fa-car"></i> إضافة سيارة جديدة</h3>
                     <form onsubmit="addCar(event)">
@@ -777,7 +754,6 @@
                     </form>
                 </div>
 
-                <!-- Cars Table -->
                 <div style="overflow-x: auto;">
                     <table class="table">
                         <thead>
@@ -797,7 +773,6 @@
             </div>
         </div>
 
-        <!-- Properties Management Section -->
         <div id="propertiesSection" class="tab-content">
             <div class="section-card">
                 <div class="section-header">
@@ -807,7 +782,6 @@
                     </button>
                 </div>
 
-                <!-- Add Property Form -->
                 <div id="addPropForm" style="display: none;" class="form-container">
                     <h3><i class="fas fa-home"></i> إضافة عقار جديد</h3>
                     <form onsubmit="addProperty(event)">
@@ -894,7 +868,6 @@
                     </form>
                 </div>
 
-                <!-- Properties Table -->
                 <div style="overflow-x: auto;">
                     <table class="table">
                         <thead>
@@ -914,7 +887,6 @@
             </div>
         </div>
 
-        <!-- Messages Section -->
         <div id="messagesSection" class="tab-content">
             <div class="section-card">
                 <div class="section-header">
@@ -924,7 +896,6 @@
             </div>
         </div>
 
-        <!-- Notifications Section -->
         <div id="notificationsSection" class="tab-content">
             <div class="section-card">
                 <div class="section-header">
@@ -958,7 +929,6 @@
             </div>
         </div>
 
-        <!-- Statistics Section -->
         <div id="statsSection" class="tab-content">
             <div class="charts-grid">
                 <div class="chart-card">
@@ -1000,7 +970,6 @@
             </div>
         </div>
 
-        <!-- Settings Section -->
         <div id="settingsSection" class="tab-content">
             <div class="section-card">
                 <h2><i class="fas fa-user-cog"></i> إعدادات المدير</h2>
@@ -1054,23 +1023,18 @@
     </div>
 
     <script>
-        // ========== تحميل بيانات المدير من localStorage ==========
         let adminCredentials = {
             username: 'admin',
             password: 'admin123'
         };
 
-        // محاولة تحميل البيانات المحفوظة
         try {
             const savedAdmin = localStorage.getItem('admin_credentials');
             if (savedAdmin) {
                 adminCredentials = JSON.parse(savedAdmin);
             }
-        } catch (e) {
-            console.log('لا توجد بيانات محفوظة');
-        }
+        } catch (e) {}
 
-        // ========== البيانات ==========
         let cars = [
             { 
                 id: 'CAR-001', 
@@ -1162,9 +1126,7 @@
         let carImagesCount = 0;
         let propImagesCount = 0;
 
-        // ========== التهيئة ==========
         document.addEventListener('DOMContentLoaded', function() {
-            // عرض بيانات المدير الحالية
             document.getElementById('currentAdminName').value = adminCredentials.username;
             document.getElementById('currentAdminPass').value = adminCredentials.password;
             
@@ -1175,7 +1137,6 @@
         });
 
         function loadData() {
-            // تحميل البيانات من localStorage
             const savedCars = localStorage.getItem('em_cars');
             const savedProps = localStorage.getItem('em_properties');
             
@@ -1190,7 +1151,6 @@
             localStorage.setItem('em_properties', JSON.stringify(properties));
         }
 
-        // ========== التنقل بين الأقسام ==========
         function showAdminSection(section) {
             document.querySelectorAll('.sidebar-menu a').forEach(link => {
                 link.classList.remove('active');
@@ -1210,7 +1170,6 @@
             } else if (section === 'properties') {
                 document.getElementById('propertiesSection').classList.add('active');
                 updatePropsTable();
-                // تأخير تهيئة الخريطة حتى تظهر
                 setTimeout(() => {
                     if (document.getElementById('propertyMap')) {
                         initPropertyMap();
@@ -1230,7 +1189,6 @@
             }
         }
 
-        // ========== تحديث الإحصائيات ==========
         function updateStats() {
             document.getElementById('totalCars').textContent = cars.length;
             document.getElementById('totalProperties').textContent = properties.length;
@@ -1272,12 +1230,10 @@
             `).join('');
         }
 
-        // ========== إدارة السيارات ==========
         function toggleCarForm() {
             const form = document.getElementById('addCarForm');
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
             
-            // إعادة تعيين النموذج عند الفتح
             if (form.style.display === 'block') {
                 document.getElementById('carImagesContainer').innerHTML = '';
                 carImagesCount = 0;
@@ -1299,7 +1255,6 @@
         function addCar(e) {
             e.preventDefault();
             
-            // جمع الصور الإضافية
             const extraImages = [];
             for (let i = 0; i < carImagesCount; i++) {
                 const input = document.getElementById(`carImage_${i}`);
@@ -1308,7 +1263,6 @@
                 }
             }
             
-            // جمع المواصفات
             const specs = document.getElementById('carSpecs').value.split('\n').filter(s => s.trim() !== '');
             
             const newCar = {
@@ -1336,7 +1290,6 @@
             document.getElementById('carImagesContainer').innerHTML = '';
             carImagesCount = 0;
             
-            // إرسال إشعار للموقع الرئيسي
             sendNotificationToMain(`تم إضافة سيارة جديدة: ${newCar.name}`);
             
             alert('✅ تمت إضافة السيارة بنجاح');
@@ -1374,13 +1327,9 @@
         }
 
         function editCar(id) {
-            const car = cars.find(c => c.id === id);
-            if (car) {
-                alert('وضع التعديل قيد التطوير');
-            }
+            alert('وضع التعديل قيد التطوير');
         }
 
-        // ========== إدارة العقارات مع الخريطة ==========
         function togglePropForm() {
             const form = document.getElementById('addPropForm');
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
@@ -1388,7 +1337,6 @@
             if (form.style.display === 'block') {
                 document.getElementById('propImagesContainer').innerHTML = '';
                 propImagesCount = 0;
-                // تهيئة الخريطة مع تأخير بسيط
                 setTimeout(() => {
                     initPropertyMap();
                 }, 200);
@@ -1408,7 +1356,6 @@
         }
 
         function initPropertyMap() {
-            // إزالة الخريطة القديمة إذا كانت موجودة
             if (map) {
                 map.remove();
                 map = null;
@@ -1417,7 +1364,6 @@
             const mapElement = document.getElementById('propertyMap');
             if (!mapElement) return;
             
-            // إحداثيات افتراضية (دمشق)
             const defaultLat = 33.5138;
             const defaultLng = 36.2765;
             
@@ -1427,29 +1373,23 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
             
-            // إضافة علامة افتراضية
             mapMarker = L.marker([defaultLat, defaultLng]).addTo(map);
             
-            // تحديث الحقول المخفية
             document.getElementById('propLat').value = defaultLat;
             document.getElementById('propLng').value = defaultLng;
             
-            // عند النقر على الخريطة
             map.on('click', function(e) {
                 const { lat, lng } = e.latlng;
                 
-                // تحديث الحقول المخفية
                 document.getElementById('propLat').value = lat.toFixed(4);
                 document.getElementById('propLng').value = lng.toFixed(4);
                 
-                // تحديث مكان العلامة
                 if (mapMarker) {
                     mapMarker.setLatLng([lat, lng]);
                 } else {
                     mapMarker = L.marker([lat, lng]).addTo(map);
                 }
                 
-                // تحديث معلومات الموقع
                 document.getElementById('locationInfo').innerHTML = `
                     <i class="fas fa-map-marker-alt"></i> 
                     الموقع المحدد: خط العرض ${lat.toFixed(4)}، خط الطول ${lng.toFixed(4)}
@@ -1460,7 +1400,6 @@
         function addProperty(e) {
             e.preventDefault();
             
-            // جمع الصور الإضافية
             const extraImages = [];
             for (let i = 0; i < propImagesCount; i++) {
                 const input = document.getElementById(`propImage_${i}`);
@@ -1469,7 +1408,6 @@
                 }
             }
             
-            // جمع المواصفات
             const specs = document.getElementById('propSpecs').value.split('\n').filter(s => s.trim() !== '');
             
             const newProp = {
@@ -1503,7 +1441,6 @@
             document.getElementById('propImagesContainer').innerHTML = '';
             propImagesCount = 0;
             
-            // إرسال إشعار للموقع الرئيسي
             sendNotificationToMain(`تم إضافة عقار جديد: ${newProp.name}`);
             
             alert('✅ تمت إضافة العقار بنجاح');
@@ -1541,13 +1478,9 @@
         }
 
         function editProperty(id) {
-            const prop = properties.find(p => p.id === id);
-            if (prop) {
-                alert('وضع التعديل قيد التطوير');
-            }
+            alert('وضع التعديل قيد التطوير');
         }
 
-        // ========== الرسائل ==========
         function displayMessages() {
             const container = document.getElementById('messagesList');
             container.innerHTML = messages.map(msg => `
@@ -1566,7 +1499,6 @@
             `).join('');
         }
 
-        // ========== الإشعارات ==========
         function showAddNotification() {
             document.getElementById('addNotificationForm').style.display = 'block';
         }
@@ -1592,7 +1524,6 @@
             notifications.unshift(notification);
             displayNotifications();
             
-            // إرسال إلى الموقع الرئيسي
             sendNotificationToMain(message);
             
             hideAddNotification();
@@ -1618,7 +1549,6 @@
         }
 
         function sendNotificationToMain(message) {
-            // حفظ الإشعار في localStorage للموقع الرئيسي
             const mainNotifications = JSON.parse(localStorage.getItem('em_notifications') || '[]');
             mainNotifications.unshift({
                 id: Date.now(),
@@ -1630,9 +1560,7 @@
             localStorage.setItem('em_notifications', JSON.stringify(mainNotifications));
         }
 
-        // ========== الإحصائيات ==========
         function initCharts() {
-            // Sales Chart
             const salesCtx = document.getElementById('salesChart')?.getContext('2d');
             if (salesCtx) {
                 new Chart(salesCtx, {
@@ -1668,7 +1596,6 @@
                 });
             }
             
-            // Products Chart
             const productsCtx = document.getElementById('productsChart')?.getContext('2d');
             if (productsCtx) {
                 new Chart(productsCtx, {
@@ -1694,7 +1621,6 @@
         }
 
         function initStatsCharts() {
-            // Daily Visits Chart
             const visitsCtx = document.getElementById('dailyVisitsChart')?.getContext('2d');
             if (visitsCtx) {
                 new Chart(visitsCtx, {
@@ -1727,7 +1653,6 @@
                 });
             }
             
-            // Top Products Chart
             const topCtx = document.getElementById('topProductsChart')?.getContext('2d');
             if (topCtx) {
                 new Chart(topCtx, {
@@ -1761,7 +1686,6 @@
             }
         }
 
-        // ========== تغيير بيانات المدير مع الحفظ في localStorage ==========
         function updateAdminCredentials(e) {
             e.preventDefault();
             
@@ -1769,7 +1693,6 @@
             const newPass = document.getElementById('newAdminPass').value;
             const confirmPass = document.getElementById('confirmAdminPass').value;
             
-            // التحقق من المدخلات
             if (!newName && !newPass) {
                 alert('❌ الرجاء إدخال الاسم الجديد أو كلمة المرور الجديدة');
                 return;
@@ -1790,7 +1713,6 @@
                 return;
             }
             
-            // تحديث البيانات
             if (newName) {
                 adminCredentials.username = newName;
             }
@@ -1799,14 +1721,11 @@
                 adminCredentials.password = newPass;
             }
             
-            // حفظ في localStorage
             localStorage.setItem('admin_credentials', JSON.stringify(adminCredentials));
             
-            // تحديث العرض
             document.getElementById('currentAdminName').value = adminCredentials.username;
             document.getElementById('currentAdminPass').value = adminCredentials.password;
             
-            // إظهار رسالة النجاح
             const successMsg = document.getElementById('settingsSuccess');
             successMsg.style.display = 'block';
             
@@ -1814,7 +1733,6 @@
                 successMsg.style.display = 'none';
             }, 3000);
             
-            // تفريغ الحقول
             resetSettingsForm();
             
             alert('✅ تم تغيير بيانات الدخول بنجاح');
@@ -1826,7 +1744,6 @@
             document.getElementById('confirmAdminPass').value = '';
         }
 
-        // ========== دوال مساعدة ==========
         function viewItem(id) {
             window.open(`index.html#details-${id}`, '_blank');
         }
@@ -1838,8 +1755,8 @@
         }
 
         function logout() {
-            window.location.href = 'index.html';
+            window.location.href = 'admin-login.html';
         }
     </script>
 </body>
-          </html>
+    </html>
