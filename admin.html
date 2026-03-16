@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EM COMBANI | لوحة تحكم المدير</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js للإحصائيات -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Leaflet Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        :root {
+            --primary: #0a0f15;        /* أسود داكن جداً */
+            --secondary: #e6b800;        /* ذهبي */
+            --gold: #e6b800;              /* ذهبي */
+            --gold-light: #ffd700;        /* ذهبي فاتح */
+            --dark: #0a0f15;              /* أسود داكن */
+            --darker: #05080c;             /* أسود أغمق */
+            --white: #ffffff;              /* أبيض للنصوص */
+            --gray: #2c3e50;               /* رمادي غامق */
+            --gray-light: #34495e;         /* رمادي أفتح قليلاً */
+            --light-bg: #14181f;           /* خلفية داكنة جداً (بدلاً من الأبيض) */
+            --card-bg: #1e2630;             /* خلفية البطاقات */
+            --shadow: 0 10px 30px rgba(0,0,0,0.5);
+            --shadow-gold: 0 5px 20px rgba(230,184,0,0.2);
+        }
+
+        body {
+            background: var(--light-bg);
+            color: var(--white);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-left: 1px solid rgba(230,184,0,0.2);
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar h2 {
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .sidebar h2 i {
+            margin-left: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            color: #ccc;
+            text-decoration: none;
+            padding: 1rem;
+            display: block;
+            border-radius: 5px;
+            transition: 0.3s;
+            border-right: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(230,184,0,0.1);
+            color: var(--secondary);
+            border-right-color: var(--secondary);
+        }
+
+        .sidebar-menu a i {
+            margin-left: 0.5rem;
+            width: 20px;
+            color: var(--secondary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-right: 280px;
+            padding: 2rem;
+            background: var(--light-bg);
+        }
+
+        .header {
+            background: var(--card-bg);
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(230,184,0,0.2);
+        }
+
+        .header h1 {
+            color: var(--white);
+        }
+
+        .header h1 span {
+            color: var(--secondary);
+        }
+
+        .admin-badge {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(230,184,0,0.2);
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(230,184,0,0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            color: var(--white);
+        }
+
+        .stat-info p {
+            color: #aaa;
+        }
+
+        /* Charts */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(230,184,0,0.2);
+        }
+
+        .chart-card h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Tables */
+        .section-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(230,184,0,0.2);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-header h2 {
+            color: var(--secondary);
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: #ffd700;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        /* Forms */
+        .form-container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border: 2px solid var(--secondary);
+        }
+
+        .form-container h3 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--primary);
+            border: 2px solid #2c3e50;
+            border-radius: 5px;
+            color: var(--white);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .form-group input[readonly] {
+            background: #1e2630;
+            color: #aaa;
+        }
+
+        /* Image Preview */
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .preview-item {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--secondary);
+            border-radius: 5px;
+            overflow: hidden;
+            background: var(--primary);
+        }
+
+        .preview-item input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            color: var(--white);
+            padding: 0.5rem;
+        }
+
+        .preview-item .remove-image {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: red;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .add-image-btn {
+            background: var(--secondary);
+            color: var(--primary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Map */
+        .map-container {
+            height: 300px;
+            width: 100%;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 2px solid var(--secondary);
+        }
+
+        .location-info {
+            background: var(--primary);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+        }
+
+        /* Tables */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 1rem;
+            text-align: right;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid #2c3e50;
+            color: var(--white);
+        }
+
+        .table tr:hover {
+            background: rgba(230,184,0,0.1);
+        }
+
+        .action-btn {
+            padding: 0.3rem 0.8rem;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 0 0.2rem;
+        }
+
+        .action-btn.edit {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        .action-btn.delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .action-btn.view {
+            background: var(--primary);
+            color: white;
+            border: 1px solid var(--secondary);
+        }
+
+        .thumbnail {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 2px solid var(--secondary);
+        }
+
+        /* Messages */
+        .message-item {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            border-right: 4px solid var(--secondary);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-user {
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .message-time {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .message-content {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #ffc107;
+            color: var(--primary);
+        }
+
+        /* Tabs */
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 5px;
+        }
+
+        .admin-tab.active {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #28a745;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* Settings Section */
+        #settingsSection .section-card {
+            background: var(--card-bg);
+        }
+
+        #settingsSection hr {
+            border-color: var(--secondary);
+            opacity: 0.3;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+                padding: 1rem;
+            }
+            
+            .sidebar h2 span,
+            .sidebar-menu a span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-right: 80px;
+            }
+            
+            .stats-grid,
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-right: 0;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2><i class="fas fa-crown"></i> <span>لوحة التحكم</span></h2>
+        <ul class="sidebar-menu">
+            <li><a href="#" onclick="showAdminSection('dashboard')" class="active"><i class="fas fa-chart-line"></i> <span>لوحة المعلومات</span></a></li>
+            <li><a href="#" onclick="showAdminSection('cars')"><i class="fas fa-car"></i> <span>إدارة السيارات</span></a></li>
+            <li><a href="#" onclick="showAdminSection('properties')"><i class="fas fa-home"></i> <span>إدارة العقارات</span></a></li>
+            <li><a href="#" onclick="showAdminSection('messages')"><i class="fas fa-comments"></i> <span>الرسائل</span></a></li>
+            <li><a href="#" onclick="showAdminSection('notifications')"><i class="fas fa-bell"></i> <span>الإشعارات</span></a></li>
+            <li><a href="#" onclick="showAdminSection('stats')"><i class="fas fa-chart-bar"></i> <span>الإحصائيات</span></a></li>
+            <li><a href="#" onclick="showAdminSection('settings')"><i class="fas fa-cog"></i> <span>الإعدادات</span></a></li>
+            <li><a href="index.html" target="_blank"><i class="fas fa-globe"></i> <span>الموقع الرئيسي</span></a></li>
+            <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>تسجيل خروج</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>مرحباً، <span>المدير</span></h1>
+            <div class="admin-badge">
+                <i class="fas fa-crown"></i> مدير النظام
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="tab-content active">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-car"></i></div>
+                    <div class="stat-info">
+                        <h3 id="totalCars">0</h3>
+                        <p>إجمالي السيارات</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-home"></i></div>
+                    <div class="stat-info">
+                        <h3 id="totalProperties">0</h3>
+                        <p>إجمالي العقارات</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <h3>1,234</h3>
+                        <p>المستخدمين</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-comments"></i></div>
+                    <div class="stat-info">
+                        <h3 id="totalMessages">0</h3>
+                        <p>الرسائل</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>المبيعات الشهرية</h3>
+                    <canvas id="salesChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>توزيع المنتجات</h3>
+                    <canvas id="productsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Items -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>أحدث السيارات المضافة</h2>
+                    <button class="btn btn-primary" onclick="showAdminSection('cars')">عرض الكل</button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>الصورة</th>
+                            <th>الاسم</th>
+                            <th>السعر</th>
+                            <th>النوع</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentCarsTable"></tbody>
+                </table>
+            </div>
+
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>أحدث العقارات المضافة</h2>
+                    <button class="btn btn-primary" onclick="showAdminSection('properties')">عرض الكل</button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>الصورة</th>
+                            <th>الاسم</th>
+                            <th>السعر</th>
+                            <th>النوع</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentPropsTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Cars Management Section -->
+        <div id="carsSection" class="tab-content">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2><i class="fas fa-car"></i> إدارة السيارات</h2>
+                    <button class="btn btn-primary" onclick="toggleCarForm()">
+                        <i class="fas fa-plus"></i> إضافة سيارة جديدة
+                    </button>
+                </div>
+
+                <!-- Add Car Form -->
+                <div id="addCarForm" style="display: none;" class="form-container">
+                    <h3><i class="fas fa-car"></i> إضافة سيارة جديدة</h3>
+                    <form onsubmit="addCar(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>اسم السيارة <span style="color: red;">*</span></label>
+                                <input type="text" id="carName" placeholder="مثال: تويوتا كامري 2024" required>
+                            </div>
+                            <div class="form-group">
+                                <label>السعر (ل.س) <span style="color: red;">*</span></label>
+                                <input type="number" id="carPrice" placeholder="مثال: 85000000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>رابط الصورة الرئيسية <span style="color: red;">*</span></label>
+                                <input type="url" id="carImage" placeholder="https://example.com/image.jpg" required>
+                            </div>
+                            <div class="form-group">
+                                <label>نوع العرض</label>
+                                <select id="carType">
+                                    <option value="بيع">بيع</option>
+                                    <option value="تأجير">تأجير</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>الموديل</label>
+                                <input type="text" id="carModel" placeholder="مثال: 2024">
+                            </div>
+                            <div class="form-group">
+                                <label>الممشى (كم)</label>
+                                <input type="text" id="carMileage" placeholder="مثال: 50,000 كم">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>صور إضافية</label>
+                            <div id="carImagesContainer" class="image-preview"></div>
+                            <button type="button" class="add-image-btn" onclick="addCarImageField()">
+                                <i class="fas fa-plus"></i> إضافة صورة
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>المواصفات (كل مواصفة في سطر منفصل)</label>
+                            <textarea id="carSpecs" rows="4" placeholder="محرك 2000 سي سي
+أوتوماتيك
+دفع رباعي
+فتحة سقف"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>التفاصيل الإضافية</label>
+                            <textarea id="carDetails" rows="3" placeholder="أي تفاصيل إضافية عن السيارة..."></textarea>
+                        </div>
+                        
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="submit" class="btn btn-success" style="flex: 1;">
+                                <i class="fas fa-save"></i> حفظ السيارة
+                            </button>
+                            <button type="button" class="btn btn-danger" style="flex: 1;" onclick="toggleCarForm()">
+                                <i class="fas fa-times"></i> إلغاء
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Cars Table -->
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>الصورة</th>
+                                <th>الاسم</th>
+                                <th>السعر</th>
+                                <th>النوع</th>
+                                <th>الموديل</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="carsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Properties Management Section -->
+        <div id="propertiesSection" class="tab-content">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2><i class="fas fa-home"></i> إدارة العقارات</h2>
+                    <button class="btn btn-primary" onclick="togglePropForm()">
+                        <i class="fas fa-plus"></i> إضافة عقار جديد
+                    </button>
+                </div>
+
+                <!-- Add Property Form -->
+                <div id="addPropForm" style="display: none;" class="form-container">
+                    <h3><i class="fas fa-home"></i> إضافة عقار جديد</h3>
+                    <form onsubmit="addProperty(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>اسم العقار <span style="color: red;">*</span></label>
+                                <input type="text" id="propName" placeholder="مثال: فيلا فاخرة في المالكي" required>
+                            </div>
+                            <div class="form-group">
+                                <label>السعر (ل.س) <span style="color: red;">*</span></label>
+                                <input type="number" id="propPrice" placeholder="مثال: 250000000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>رابط الصورة الرئيسية <span style="color: red;">*</span></label>
+                                <input type="url" id="propImage" placeholder="https://example.com/image.jpg" required>
+                            </div>
+                            <div class="form-group">
+                                <label>نوع العرض</label>
+                                <select id="propType">
+                                    <option value="بيع">بيع</option>
+                                    <option value="تأجير">تأجير</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>المساحة (م²)</label>
+                                <input type="text" id="propArea" placeholder="مثال: 500">
+                            </div>
+                            <div class="form-group">
+                                <label>عدد الغرف</label>
+                                <input type="text" id="propRooms" placeholder="مثال: 5">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>صور إضافية</label>
+                            <div id="propImagesContainer" class="image-preview"></div>
+                            <button type="button" class="add-image-btn" onclick="addPropertyImageField()">
+                                <i class="fas fa-plus"></i> إضافة صورة
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>رابط صورة 360 درجة</label>
+                            <input type="url" id="propView360" placeholder="https://example.com/360-image.jpg">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>الموقع على الخريطة <span style="color: red;">*</span></label>
+                            <div id="propertyMap" class="map-container"></div>
+                            <div class="location-info" id="locationInfo">
+                                <i class="fas fa-map-marker-alt"></i> 
+                                انقر على الخريطة لتحديد موقع العقار
+                            </div>
+                            <input type="hidden" id="propLat" value="33.5138">
+                            <input type="hidden" id="propLng" value="36.2765">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>العنوان التفصيلي</label>
+                            <input type="text" id="propAddress" placeholder="مثال: دمشق - المالكي - شارع الثورة">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>المواصفات (كل مواصفة في سطر منفصل)</label>
+                            <textarea id="propSpecs" rows="4" placeholder="مسبح
+حديقة
+كراج سيارات
+مصعد"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>التفاصيل الإضافية</label>
+                            <textarea id="propDetails" rows="3" placeholder="أي تفاصيل إضافية عن العقار..."></textarea>
+                        </div>
+                        
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="submit" class="btn btn-success" style="flex: 1;">
+                                <i class="fas fa-save"></i> حفظ العقار
+                            </button>
+                            <button type="button" class="btn btn-danger" style="flex: 1;" onclick="togglePropForm()">
+                                <i class="fas fa-times"></i> إلغاء
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Properties Table -->
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>الصورة</th>
+                                <th>الاسم</th>
+                                <th>السعر</th>
+                                <th>النوع</th>
+                                <th>المساحة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="propsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages Section -->
+        <div id="messagesSection" class="tab-content">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2><i class="fas fa-comments"></i> الرسائل الواردة</h2>
+                </div>
+                <div id="messagesList"></div>
+            </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div id="notificationsSection" class="tab-content">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2><i class="fas fa-bell"></i> إدارة الإشعارات</h2>
+                    <button class="btn btn-primary" onclick="showAddNotification()">
+                        <i class="fas fa-plus"></i> إشعار جديد
+                    </button>
+                </div>
+
+                <div id="addNotificationForm" style="display: none;" class="form-container">
+                    <form onsubmit="sendNotification(event)">
+                        <div class="form-group">
+                            <label>نوع الإشعار</label>
+                            <select id="notifyType">
+                                <option value="info">معلومات</option>
+                                <option value="success">نجاح</option>
+                                <option value="warning">تحذير</option>
+                                <option value="offer">عرض خاص</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>الرسالة</label>
+                            <textarea id="notifyMessage" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">إرسال الإشعار</button>
+                        <button type="button" class="btn btn-danger" onclick="hideAddNotification()">إلغاء</button>
+                    </form>
+                </div>
+
+                <div id="notificationsList"></div>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div id="statsSection" class="tab-content">
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>الزيارات اليومية</h3>
+                    <canvas id="dailyVisitsChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>المنتجات الأكثر مشاهدة</h3>
+                    <canvas id="topProductsChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="section-card">
+                <h3>تقرير المبيعات</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>الشهر</th>
+                            <th>عدد السيارات المباعة</th>
+                            <th>عدد العقارات المباعة</th>
+                            <th>إجمالي المبيعات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>يناير 2024</td>
+                            <td>12</td>
+                            <td>5</td>
+                            <td>850,000,000 ل.س</td>
+                        </tr>
+                        <tr>
+                            <td>فبراير 2024</td>
+                            <td>15</td>
+                            <td>7</td>
+                            <td>1,200,000,000 ل.س</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settingsSection" class="tab-content">
+            <div class="section-card">
+                <h2><i class="fas fa-user-cog"></i> إعدادات المدير</h2>
+                
+                <div class="success-message" id="settingsSuccess" style="display: none;">
+                    <i class="fas fa-check-circle"></i> تم تحديث البيانات بنجاح
+                </div>
+
+                <form onsubmit="updateAdminCredentials(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>👤 اسم المدير الحالي</label>
+                            <input type="text" id="currentAdminName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>🔑 كلمة المرور الحالية</label>
+                            <input type="text" id="currentAdminPass" readonly>
+                        </div>
+                    </div>
+                    
+                    <hr style="margin: 2rem 0; border: 1px dashed var(--secondary);">
+                    
+                    <h3 style="color: var(--secondary); margin-bottom: 1.5rem;">تغيير بيانات الدخول</h3>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>اسم المدير الجديد</label>
+                            <input type="text" id="newAdminName" placeholder="أدخل الاسم الجديد">
+                        </div>
+                        <div class="form-group">
+                            <label>كلمة المرور الجديدة</label>
+                            <input type="password" id="newAdminPass" placeholder="أدخل كلمة المرور الجديدة">
+                        </div>
+                        <div class="form-group">
+                            <label>تأكيد كلمة المرور</label>
+                            <input type="password" id="confirmAdminPass" placeholder="تأكيد كلمة المرور">
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="submit" class="btn btn-success" style="flex: 1;">
+                            <i class="fas fa-save"></i> حفظ التغييرات
+                        </button>
+                        <button type="button" class="btn btn-primary" style="flex: 1;" onclick="resetSettingsForm()">
+                            <i class="fas fa-undo"></i> إعادة تعيين
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== تحميل بيانات المدير من localStorage ==========
+        let adminCredentials = {
+            username: 'admin',
+            password: 'admin123'
+        };
+
+        // محاولة تحميل البيانات المحفوظة
+        try {
+            const savedAdmin = localStorage.getItem('admin_credentials');
+            if (savedAdmin) {
+                adminCredentials = JSON.parse(savedAdmin);
+            }
+        } catch (e) {
+            console.log('لا توجد بيانات محفوظة');
+        }
+
+        // ========== البيانات ==========
+        let cars = [
+            { 
+                id: 'CAR-001', 
+                name: 'بي إم دبليو X5 2020', 
+                price: '85000000', 
+                image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600', 
+                images: [],
+                details: 'موديل 2020 - فل كامل - 80,000 كم', 
+                specs: ['محرك 3000 سي سي', 'أوتوماتيك', 'دفع رباعي'],
+                type: 'بيع',
+                model: '2020',
+                mileage: '80,000 كم',
+                rating: 4.5,
+                reviews: []
+            },
+            { 
+                id: 'CAR-002', 
+                name: 'مرسيدس C-Class 2019', 
+                price: '65000000', 
+                image: 'https://images.unsplash.com/photo-1563720360172-67b8f3dce741?w=600', 
+                images: [],
+                details: 'موديل 2019 - فضي - 60,000 كم', 
+                specs: ['محرك 2000 سي سي', 'أوتوماتيك'],
+                type: 'بيع',
+                model: '2019',
+                mileage: '60,000 كم',
+                rating: 4.2,
+                reviews: []
+            }
+        ];
+
+        let properties = [
+            { 
+                id: 'RE-001', 
+                name: 'فيلا فاخرة في المالكي', 
+                price: '250000000', 
+                image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600', 
+                images: [],
+                details: '500 م² - 5 غرف - مسبح - حديقة', 
+                specs: ['5 غرف', '3 حمامات', 'مسبح'],
+                type: 'بيع',
+                area: '500',
+                rooms: '5',
+                address: 'دمشق - المالكي',
+                location: { lat: 33.5138, lng: 36.2765 },
+                rating: 4.8,
+                reviews: [],
+                view360: ''
+            },
+            { 
+                id: 'RE-002', 
+                name: 'شقة في أبو رمانة', 
+                price: '95000000', 
+                image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600', 
+                images: [],
+                details: '150 م² - 3 غرف - إطلالة بانورامية', 
+                specs: ['3 غرف', '2 حمامات'],
+                type: 'بيع',
+                area: '150',
+                rooms: '3',
+                address: 'دمشق - أبو رمانة',
+                location: { lat: 33.5178, lng: 36.2865 },
+                rating: 4.3,
+                reviews: [],
+                view360: ''
+            }
+        ];
+
+        let notifications = [];
+        let messages = [
+            {
+                id: 1,
+                user: 'أحمد محمد',
+                message: 'أريد استفسار عن سيارة BMW X5',
+                time: '2024-03-15 14:30',
+                replied: false
+            },
+            {
+                id: 2,
+                user: 'سارة علي',
+                message: 'هل الفيلا في المالكي متاحة للمعاينة؟',
+                time: '2024-03-15 15:45',
+                replied: true
+            }
+        ];
+
+        let map = null;
+        let mapMarker = null;
+        let carImagesCount = 0;
+        let propImagesCount = 0;
+
+        // ========== التهيئة ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            // عرض بيانات المدير الحالية
+            document.getElementById('currentAdminName').value = adminCredentials.username;
+            document.getElementById('currentAdminPass').value = adminCredentials.password;
+            
+            updateAllTables();
+            updateStats();
+            initCharts();
+            loadData();
+        });
+
+        function loadData() {
+            // تحميل البيانات من localStorage
+            const savedCars = localStorage.getItem('em_cars');
+            const savedProps = localStorage.getItem('em_properties');
+            
+            if (savedCars) cars = JSON.parse(savedCars);
+            if (savedProps) properties = JSON.parse(savedProps);
+            
+            updateAllTables();
+        }
+
+        function saveData() {
+            localStorage.setItem('em_cars', JSON.stringify(cars));
+            localStorage.setItem('em_properties', JSON.stringify(properties));
+        }
+
+        // ========== التنقل بين الأقسام ==========
+        function showAdminSection(section) {
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            if (section === 'dashboard') {
+                document.getElementById('dashboardSection').classList.add('active');
+                updateStats();
+            } else if (section === 'cars') {
+                document.getElementById('carsSection').classList.add('active');
+                updateCarsTable();
+            } else if (section === 'properties') {
+                document.getElementById('propertiesSection').classList.add('active');
+                updatePropsTable();
+                // تأخير تهيئة الخريطة حتى تظهر
+                setTimeout(() => {
+                    if (document.getElementById('propertyMap')) {
+                        initPropertyMap();
+                    }
+                }, 300);
+            } else if (section === 'messages') {
+                document.getElementById('messagesSection').classList.add('active');
+                displayMessages();
+            } else if (section === 'notifications') {
+                document.getElementById('notificationsSection').classList.add('active');
+                displayNotifications();
+            } else if (section === 'stats') {
+                document.getElementById('statsSection').classList.add('active');
+                initStatsCharts();
+            } else if (section === 'settings') {
+                document.getElementById('settingsSection').classList.add('active');
+            }
+        }
+
+        // ========== تحديث الإحصائيات ==========
+        function updateStats() {
+            document.getElementById('totalCars').textContent = cars.length;
+            document.getElementById('totalProperties').textContent = properties.length;
+            document.getElementById('totalMessages').textContent = messages.length;
+            
+            updateRecentTables();
+        }
+
+        function updateRecentTables() {
+            const recentCars = cars.slice(0, 5);
+            const recentProps = properties.slice(0, 5);
+            
+            document.getElementById('recentCarsTable').innerHTML = recentCars.map(car => `
+                <tr>
+                    <td><img src="${car.image}" class="thumbnail"></td>
+                    <td>${car.name}</td>
+                    <td>${Number(car.price).toLocaleString()} ل.س</td>
+                    <td>${car.type}</td>
+                    <td>
+                        <button class="action-btn view" onclick="viewItem('${car.id}')"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn edit" onclick="editCar('${car.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" onclick="deleteCar('${car.id}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('recentPropsTable').innerHTML = recentProps.map(prop => `
+                <tr>
+                    <td><img src="${prop.image}" class="thumbnail"></td>
+                    <td>${prop.name}</td>
+                    <td>${Number(prop.price).toLocaleString()} ل.س</td>
+                    <td>${prop.type}</td>
+                    <td>
+                        <button class="action-btn view" onclick="viewItem('${prop.id}')"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn edit" onclick="editProperty('${prop.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" onclick="deleteProperty('${prop.id}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ========== إدارة السيارات ==========
+        function toggleCarForm() {
+            const form = document.getElementById('addCarForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            
+            // إعادة تعيين النموذج عند الفتح
+            if (form.style.display === 'block') {
+                document.getElementById('carImagesContainer').innerHTML = '';
+                carImagesCount = 0;
+            }
+        }
+
+        function addCarImageField() {
+            const container = document.getElementById('carImagesContainer');
+            const div = document.createElement('div');
+            div.className = 'preview-item';
+            div.innerHTML = `
+                <input type="url" id="carImage_${carImagesCount}" placeholder="رابط الصورة" style="width: 100%; height: 100%; border: none; padding: 0.5rem; background: var(--primary); color: white;">
+                <span class="remove-image" onclick="this.parentElement.remove()">✕</span>
+            `;
+            container.appendChild(div);
+            carImagesCount++;
+        }
+
+        function addCar(e) {
+            e.preventDefault();
+            
+            // جمع الصور الإضافية
+            const extraImages = [];
+            for (let i = 0; i < carImagesCount; i++) {
+                const input = document.getElementById(`carImage_${i}`);
+                if (input && input.value) {
+                    extraImages.push(input.value);
+                }
+            }
+            
+            // جمع المواصفات
+            const specs = document.getElementById('carSpecs').value.split('\n').filter(s => s.trim() !== '');
+            
+            const newCar = {
+                id: 'CAR-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0'),
+                name: document.getElementById('carName').value,
+                price: document.getElementById('carPrice').value,
+                image: document.getElementById('carImage').value,
+                images: extraImages,
+                type: document.getElementById('carType').value,
+                model: document.getElementById('carModel').value,
+                mileage: document.getElementById('carMileage').value,
+                specs: specs,
+                details: document.getElementById('carDetails').value,
+                rating: 0,
+                reviews: []
+            };
+            
+            cars.push(newCar);
+            saveData();
+            updateCarsTable();
+            updateStats();
+            
+            toggleCarForm();
+            e.target.reset();
+            document.getElementById('carImagesContainer').innerHTML = '';
+            carImagesCount = 0;
+            
+            // إرسال إشعار للموقع الرئيسي
+            sendNotificationToMain(`تم إضافة سيارة جديدة: ${newCar.name}`);
+            
+            alert('✅ تمت إضافة السيارة بنجاح');
+        }
+
+        function updateCarsTable() {
+            const tbody = document.getElementById('carsTableBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = cars.map((car, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td><img src="${car.image}" class="thumbnail"></td>
+                    <td>${car.name}</td>
+                    <td>${Number(car.price).toLocaleString()} ل.س</td>
+                    <td>${car.type}</td>
+                    <td>${car.model || '-'}</td>
+                    <td>
+                        <button class="action-btn view" onclick="viewItem('${car.id}')"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn edit" onclick="editCar('${car.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" onclick="deleteCar('${car.id}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteCar(id) {
+            if (confirm('هل أنت متأكد من حذف هذه السيارة؟')) {
+                cars = cars.filter(c => c.id !== id);
+                saveData();
+                updateCarsTable();
+                updateStats();
+                alert('✅ تم حذف السيارة بنجاح');
+            }
+        }
+
+        function editCar(id) {
+            const car = cars.find(c => c.id === id);
+            if (car) {
+                alert('وضع التعديل قيد التطوير');
+            }
+        }
+
+        // ========== إدارة العقارات مع الخريطة ==========
+        function togglePropForm() {
+            const form = document.getElementById('addPropForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            
+            if (form.style.display === 'block') {
+                document.getElementById('propImagesContainer').innerHTML = '';
+                propImagesCount = 0;
+                // تهيئة الخريطة مع تأخير بسيط
+                setTimeout(() => {
+                    initPropertyMap();
+                }, 200);
+            }
+        }
+
+        function addPropertyImageField() {
+            const container = document.getElementById('propImagesContainer');
+            const div = document.createElement('div');
+            div.className = 'preview-item';
+            div.innerHTML = `
+                <input type="url" id="propImage_${propImagesCount}" placeholder="رابط الصورة" style="width: 100%; height: 100%; border: none; padding: 0.5rem; background: var(--primary); color: white;">
+                <span class="remove-image" onclick="this.parentElement.remove()">✕</span>
+            `;
+            container.appendChild(div);
+            propImagesCount++;
+        }
+
+        function initPropertyMap() {
+            // إزالة الخريطة القديمة إذا كانت موجودة
+            if (map) {
+                map.remove();
+                map = null;
+            }
+            
+            const mapElement = document.getElementById('propertyMap');
+            if (!mapElement) return;
+            
+            // إحداثيات افتراضية (دمشق)
+            const defaultLat = 33.5138;
+            const defaultLng = 36.2765;
+            
+            map = L.map('propertyMap').setView([defaultLat, defaultLng], 13);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            // إضافة علامة افتراضية
+            mapMarker = L.marker([defaultLat, defaultLng]).addTo(map);
+            
+            // تحديث الحقول المخفية
+            document.getElementById('propLat').value = defaultLat;
+            document.getElementById('propLng').value = defaultLng;
+            
+            // عند النقر على الخريطة
+            map.on('click', function(e) {
+                const { lat, lng } = e.latlng;
+                
+                // تحديث الحقول المخفية
+                document.getElementById('propLat').value = lat.toFixed(4);
+                document.getElementById('propLng').value = lng.toFixed(4);
+                
+                // تحديث مكان العلامة
+                if (mapMarker) {
+                    mapMarker.setLatLng([lat, lng]);
+                } else {
+                    mapMarker = L.marker([lat, lng]).addTo(map);
+                }
+                
+                // تحديث معلومات الموقع
+                document.getElementById('locationInfo').innerHTML = `
+                    <i class="fas fa-map-marker-alt"></i> 
+                    الموقع المحدد: خط العرض ${lat.toFixed(4)}، خط الطول ${lng.toFixed(4)}
+                `;
+            });
+        }
+
+        function addProperty(e) {
+            e.preventDefault();
+            
+            // جمع الصور الإضافية
+            const extraImages = [];
+            for (let i = 0; i < propImagesCount; i++) {
+                const input = document.getElementById(`propImage_${i}`);
+                if (input && input.value) {
+                    extraImages.push(input.value);
+                }
+            }
+            
+            // جمع المواصفات
+            const specs = document.getElementById('propSpecs').value.split('\n').filter(s => s.trim() !== '');
+            
+            const newProp = {
+                id: 'RE-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0'),
+                name: document.getElementById('propName').value,
+                price: document.getElementById('propPrice').value,
+                image: document.getElementById('propImage').value,
+                images: extraImages,
+                view360: document.getElementById('propView360').value,
+                type: document.getElementById('propType').value,
+                area: document.getElementById('propArea').value,
+                rooms: document.getElementById('propRooms').value,
+                address: document.getElementById('propAddress').value,
+                location: {
+                    lat: parseFloat(document.getElementById('propLat').value) || 33.5138,
+                    lng: parseFloat(document.getElementById('propLng').value) || 36.2765
+                },
+                specs: specs,
+                details: document.getElementById('propDetails').value,
+                rating: 0,
+                reviews: []
+            };
+            
+            properties.push(newProp);
+            saveData();
+            updatePropsTable();
+            updateStats();
+            
+            togglePropForm();
+            e.target.reset();
+            document.getElementById('propImagesContainer').innerHTML = '';
+            propImagesCount = 0;
+            
+            // إرسال إشعار للموقع الرئيسي
+            sendNotificationToMain(`تم إضافة عقار جديد: ${newProp.name}`);
+            
+            alert('✅ تمت إضافة العقار بنجاح');
+        }
+
+        function updatePropsTable() {
+            const tbody = document.getElementById('propsTableBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = properties.map((prop, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td><img src="${prop.image}" class="thumbnail"></td>
+                    <td>${prop.name}</td>
+                    <td>${Number(prop.price).toLocaleString()} ل.س</td>
+                    <td>${prop.type}</td>
+                    <td>${prop.area || '-'} م²</td>
+                    <td>
+                        <button class="action-btn view" onclick="viewItem('${prop.id}')"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn edit" onclick="editProperty('${prop.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" onclick="deleteProperty('${prop.id}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteProperty(id) {
+            if (confirm('هل أنت متأكد من حذف هذا العقار؟')) {
+                properties = properties.filter(p => p.id !== id);
+                saveData();
+                updatePropsTable();
+                updateStats();
+                alert('✅ تم حذف العقار بنجاح');
+            }
+        }
+
+        function editProperty(id) {
+            const prop = properties.find(p => p.id === id);
+            if (prop) {
+                alert('وضع التعديل قيد التطوير');
+            }
+        }
+
+        // ========== الرسائل ==========
+        function displayMessages() {
+            const container = document.getElementById('messagesList');
+            container.innerHTML = messages.map(msg => `
+                <div class="message-item">
+                    <div class="message-header">
+                        <span class="message-user"><i class="fas fa-user"></i> ${msg.user}</span>
+                        <span class="message-time">${msg.time}</span>
+                    </div>
+                    <div class="message-content">${msg.message}</div>
+                    <div>
+                        ${msg.replied ? 
+                            '<span class="badge badge-success">تم الرد</span>' : 
+                            '<span class="badge badge-warning">في انتظار الرد</span>'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ========== الإشعارات ==========
+        function showAddNotification() {
+            document.getElementById('addNotificationForm').style.display = 'block';
+        }
+
+        function hideAddNotification() {
+            document.getElementById('addNotificationForm').style.display = 'none';
+        }
+
+        function sendNotification(e) {
+            e.preventDefault();
+            
+            const type = document.getElementById('notifyType').value;
+            const message = document.getElementById('notifyMessage').value;
+            
+            const notification = {
+                id: Date.now(),
+                type: type,
+                message: message,
+                time: new Date().toLocaleString('ar-SA'),
+                read: false
+            };
+            
+            notifications.unshift(notification);
+            displayNotifications();
+            
+            // إرسال إلى الموقع الرئيسي
+            sendNotificationToMain(message);
+            
+            hideAddNotification();
+            e.target.reset();
+            alert('✅ تم إرسال الإشعار');
+        }
+
+        function displayNotifications() {
+            const container = document.getElementById('notificationsList');
+            container.innerHTML = notifications.map(n => `
+                <div class="message-item">
+                    <div class="message-header">
+                        <span class="message-user">
+                            <i class="fas ${n.type === 'success' ? 'fa-check-circle' : n.type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'}" 
+                               style="color: ${n.type === 'success' ? '#28a745' : n.type === 'warning' ? '#ffc107' : '#17a2b8'}"></i>
+                            ${n.type === 'success' ? 'نجاح' : n.type === 'warning' ? 'تحذير' : 'معلومات'}
+                        </span>
+                        <span class="message-time">${n.time}</span>
+                    </div>
+                    <div class="message-content">${n.message}</div>
+                </div>
+            `).join('');
+        }
+
+        function sendNotificationToMain(message) {
+            // حفظ الإشعار في localStorage للموقع الرئيسي
+            const mainNotifications = JSON.parse(localStorage.getItem('em_notifications') || '[]');
+            mainNotifications.unshift({
+                id: Date.now(),
+                message: message,
+                type: 'info',
+                read: false,
+                time: new Date().toLocaleString('ar-SA')
+            });
+            localStorage.setItem('em_notifications', JSON.stringify(mainNotifications));
+        }
+
+        // ========== الإحصائيات ==========
+        function initCharts() {
+            // Sales Chart
+            const salesCtx = document.getElementById('salesChart')?.getContext('2d');
+            if (salesCtx) {
+                new Chart(salesCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                        datasets: [{
+                            label: 'المبيعات (مليون ل.س)',
+                            data: [120, 190, 300, 500, 800, 1200],
+                            borderColor: '#e6b800',
+                            backgroundColor: 'rgba(230,184,0,0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: { color: 'white' }
+                            },
+                            x: {
+                                ticks: { color: 'white' }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Products Chart
+            const productsCtx = document.getElementById('productsChart')?.getContext('2d');
+            if (productsCtx) {
+                new Chart(productsCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['سيارات', 'عقارات'],
+                        datasets: [{
+                            data: [cars.length, properties.length],
+                            backgroundColor: ['#e6b800', '#1a2b3c']
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function initStatsCharts() {
+            // Daily Visits Chart
+            const visitsCtx = document.getElementById('dailyVisitsChart')?.getContext('2d');
+            if (visitsCtx) {
+                new Chart(visitsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'],
+                        datasets: [{
+                            label: 'عدد الزيارات',
+                            data: [65, 75, 85, 95, 80, 70, 45],
+                            backgroundColor: '#e6b800'
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: { color: 'white' }
+                            },
+                            x: {
+                                ticks: { color: 'white' }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Top Products Chart
+            const topCtx = document.getElementById('topProductsChart')?.getContext('2d');
+            if (topCtx) {
+                new Chart(topCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['BMW X5', 'فيلا المالكي', 'مرسيدس C-Class', 'شقة أبو رمانة'],
+                        datasets: [{
+                            label: 'عدد المشاهدات',
+                            data: [150, 120, 90, 70],
+                            backgroundColor: '#e6b800'
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: { color: 'white' }
+                            },
+                            x: {
+                                ticks: { color: 'white' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // ========== تغيير بيانات المدير مع الحفظ في localStorage ==========
+        function updateAdminCredentials(e) {
+            e.preventDefault();
+            
+            const newName = document.getElementById('newAdminName').value;
+            const newPass = document.getElementById('newAdminPass').value;
+            const confirmPass = document.getElementById('confirmAdminPass').value;
+            
+            // التحقق من المدخلات
+            if (!newName && !newPass) {
+                alert('❌ الرجاء إدخال الاسم الجديد أو كلمة المرور الجديدة');
+                return;
+            }
+            
+            if (newPass && newPass !== confirmPass) {
+                alert('❌ كلمة المرور غير متطابقة');
+                return;
+            }
+            
+            if (newPass && newPass.length < 4) {
+                alert('❌ كلمة المرور يجب أن تكون 4 أحرف على الأقل');
+                return;
+            }
+            
+            if (newName && newName.length < 3) {
+                alert('❌ اسم المدير يجب أن يكون 3 أحرف على الأقل');
+                return;
+            }
+            
+            // تحديث البيانات
+            if (newName) {
+                adminCredentials.username = newName;
+            }
+            
+            if (newPass) {
+                adminCredentials.password = newPass;
+            }
+            
+            // حفظ في localStorage
+            localStorage.setItem('admin_credentials', JSON.stringify(adminCredentials));
+            
+            // تحديث العرض
+            document.getElementById('currentAdminName').value = adminCredentials.username;
+            document.getElementById('currentAdminPass').value = adminCredentials.password;
+            
+            // إظهار رسالة النجاح
+            const successMsg = document.getElementById('settingsSuccess');
+            successMsg.style.display = 'block';
+            
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+            
+            // تفريغ الحقول
+            resetSettingsForm();
+            
+            alert('✅ تم تغيير بيانات الدخول بنجاح');
+        }
+
+        function resetSettingsForm() {
+            document.getElementById('newAdminName').value = '';
+            document.getElementById('newAdminPass').value = '';
+            document.getElementById('confirmAdminPass').value = '';
+        }
+
+        // ========== دوال مساعدة ==========
+        function viewItem(id) {
+            window.open(`index.html#details-${id}`, '_blank');
+        }
+
+        function updateAllTables() {
+            updateCarsTable();
+            updatePropsTable();
+            updateRecentTables();
+        }
+
+        function logout() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+          </html>
